@@ -15,12 +15,10 @@ import {fetchPromotionDetail} from '../services/api';
 import {PromotionResponse} from '../types/types';
 import LoadingIndicator from '../components/LoadingIndicator';
 import {backIcon} from '../assets';
+import { stripHtmlTags } from '../navigation/utils/stripHtmlTags';
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const stripHtmlTags = (html: string) => {
-  return html.replace(/<\/?[^>]+(>|$)/g, '');
-};
 
 const PromotionDetail = (props: PromotionDetailScreenProps) => {
   const navigation = useAppNavigation();
