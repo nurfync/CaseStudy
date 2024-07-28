@@ -16,7 +16,7 @@ import {kesfetIcon, plusIcon, star} from '../assets';
 
 function PlusScreen() {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={styles.screenContainer}>
       <Text>Plus</Text>
     </View>
   );
@@ -29,22 +29,25 @@ const TabNavigator = () => {
     <BottomTab.Navigator
       screenOptions={({route, navigation}) => ({
         tabBarIcon: ({focused}) => {
+          const icons: Record<string, any> = {
+            Home: kesfetIcon,
+            AnotherScreen: star,
+          };
+
           if (route.name === 'Plus') {
             return (
               <TouchableOpacity
                 style={styles.plusButton}
                 onPress={() => navigation.navigate('Plus')}>
-                <Image source={plusIcon} style={{width: 80, height: 80}} />
+                <Image source={plusIcon} style={styles.plusIcon} />
               </TouchableOpacity>
             );
           }
-          const icons: Record<string, any> = {
-            Home: kesfetIcon,
-            Plus: plusIcon,
-            AnotherScreen: star,
-          };
+
           return (
-            <Image source={icons[route.name]} style={{width: 24, height: 24}} />
+            <View style={styles.iconContainer}>
+              <Image source={icons[route.name]} style={styles.icon} />
+            </View>
           );
         },
         tabBarLabel: ({focused}) => {
@@ -52,8 +55,9 @@ const TabNavigator = () => {
             Home: 'KEŞFET',
             AnotherScreen: 'DAHA CÜZDAN',
           };
+
           return (
-            <Text style={{paddingTop:5,color: focused ? '#000' : '#888', fontSize: 12}}>
+            <Text style={[styles.tabLabel, {color: focused ? '#000' : '#888'}]}>
               {labels[route.name]}
             </Text>
           );
@@ -62,10 +66,12 @@ const TabNavigator = () => {
           <TouchableOpacity {...props} />
         ),
         tabBarStyle: styles.tabBar,
+        tabBarItemStyle: styles.tabBarItem,
+
       })}>
       <BottomTab.Screen
         name="Home"
-        options={{headerShown: false, tabBarLabel: 'KEŞFET'}}>
+        options={{headerShown: false}}>
         {props => (
           <HomeScreen
             {...props}
@@ -87,7 +93,6 @@ const TabNavigator = () => {
         component={AnotherScreen}
         options={{
           headerShown: false,
-          tabBarLabel: 'DAHA CÜZDAN',
         }}
       />
     </BottomTab.Navigator>
@@ -99,9 +104,8 @@ export default TabNavigator;
 const styles = StyleSheet.create({
   tabBar: {
     height: 70,
-    backgroundColor: 'white',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
     elevation: 30,
     shadowOpacity: 0.1,
     position: 'absolute',
@@ -110,20 +114,38 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop:20
+    
   },
-  plusButton: {
-    width: 70,
-    height: 70,
-    borderRadius: 25,
-    backgroundColor: '#fff',
+  tabBarItem: {
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    elevation: 10,
-    borderWidth: 2,
+    paddingTop: 20,
+    height:60
   },
-  tabText: {
-    fontSize: 16,
+  plusButton: {
+    position:'absolute'
+  },
+  plusIcon: {
+    marginBottom:30,
+    width: 80,
+    height: 80,
+  },
+  screenContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
+  icon: {
+    width: 24,
+    height: 24,
+  },
+  tabLabel: {
+    paddingTop: 15,
+    fontSize: 10,
   },
 });
