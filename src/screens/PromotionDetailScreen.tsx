@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Button,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {PromotionDetailScreenProps} from '../types/types';
 import {useAppNavigation} from '../navigation/utils/useAppNaavigation';
@@ -15,10 +16,9 @@ import {fetchPromotionDetail} from '../services/api';
 import {PromotionResponse} from '../types/types';
 import LoadingIndicator from '../components/LoadingIndicator';
 import {backIcon} from '../assets';
-import { stripHtmlTags } from '../navigation/utils/stripHtmlTags';
+import {stripHtmlTags} from '../navigation/utils/stripHtmlTags';
 
 const {width: screenWidth} = Dimensions.get('window');
-
 
 const PromotionDetail = (props: PromotionDetailScreenProps) => {
   const navigation = useAppNavigation();
@@ -60,16 +60,16 @@ const PromotionDetail = (props: PromotionDetailScreenProps) => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.imageContainer}>
+        <View style={styles.imageContainer}>
           <Image
             source={{uri: promotionDetail?.ImageUrl}}
             style={styles.promotionImage}
           />
-          <View style={styles.backIconContainer}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backIconContainer}>
             <Image source={backIcon} style={styles.backIcon} />
-          </View>
+          </TouchableOpacity>
           <View style={styles.brandIconContainer}>
             <Image
               source={{uri: promotionDetail?.BrandIconUrl}}
@@ -81,7 +81,7 @@ const PromotionDetail = (props: PromotionDetailScreenProps) => {
               son gün {promotionDetail?.RemainingText}
             </Text>
           </View>
-        </TouchableOpacity>
+        </View>
         <View style={styles.promotionContent}>
           <Text style={styles.promotionTitle}>
             {stripHtmlTags(promotionDetail?.Title ?? 'N/A')}
@@ -92,8 +92,7 @@ const PromotionDetail = (props: PromotionDetailScreenProps) => {
           <Text style={styles.firstDescription}>{firstDescription}</Text>
         </View>
       </ScrollView>
-      <TouchableOpacity
-        style={styles.button}>
+      <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Hemen Katıl</Text>
       </TouchableOpacity>
     </View>
@@ -122,7 +121,7 @@ const styles = StyleSheet.create({
   brandIconContainer: {
     position: 'absolute',
     bottom: 0,
-    left: 20,
+    left: 10,
     backgroundColor: '#fff',
     borderRadius: 50,
     padding: 5,
@@ -136,7 +135,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     justifyContent: 'center',
-    alignItems:'center'
+    alignItems: 'center',
   },
   backIcon: {
     width: 18,
@@ -187,7 +186,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
     alignSelf: 'center',
-    borderRadius:50
+    borderRadius: 50,
   },
   buttonText: {
     color: '#fff',
